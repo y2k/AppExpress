@@ -9,9 +9,11 @@ namespace AppExpress
     {
         AppService apps = new AppService();
 
-        protected async override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(bundle);
+            base.OnCreate(savedInstanceState);
+            if (savedInstanceState == null)
+                AndroidSyncService.InitializeService(this);
 
             AddPreferencesFromResource(Resource.Xml.settings);
             foreach (var app in await apps.GetAppsAsync())
