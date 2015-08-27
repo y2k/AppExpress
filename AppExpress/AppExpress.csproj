@@ -72,6 +72,9 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\AppService.cs" />
     <Compile Include="Models\App.cs" />
+    <Compile Include="Models\SyncService.cs" />
+    <Compile Include="AndroidSyncService.cs" />
+    <Compile Include="BootBroadcastReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
