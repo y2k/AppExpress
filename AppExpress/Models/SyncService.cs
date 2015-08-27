@@ -7,7 +7,9 @@ namespace AppExpress
     {
         public Task Sync()
         {
-            throw new NotImplementedException();
+
+
+
         }
     }
 }

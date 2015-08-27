@@ -22,7 +22,7 @@ namespace AppExpress
                     new CheckBoxPreference(this)
                     {
                         Title = app.Title,
-                        Summary = "ver " + app.Version,
+                        Summary = "ver " + app.ServerVersion,
                     });
             }
         }
