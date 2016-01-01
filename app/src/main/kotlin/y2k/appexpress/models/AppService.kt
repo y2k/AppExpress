@@ -2,9 +2,9 @@ package y2k.appexpress.models
 
 import rx.Observable
 
-/**
- * Created by y2k on 1/1/16.
- */
+//
+// Created by y2k on 1/1/16.
+//
 class AppService(
     private val packageService: PackageService,
     private val storageService: StorageService) {
@@ -25,7 +25,7 @@ class AppService(
             }
             .filter { it != null }.map { it!! }
             .map {
-                it.installed = packageService.checkIsInstalled(it.id)
+                it.installedVersion = packageService.getVersion(it.packageName)
                 it
             }
             .toList()

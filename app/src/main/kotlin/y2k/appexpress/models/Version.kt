@@ -3,12 +3,14 @@ package y2k.appexpress.models
 //
 // Created by y2k on 1/1/16.
 //
-class Version(val name: String) : Comparable<Version> {
+class Version(name: String) : Comparable<Version> {
 
-    val parts = name.split('.')
+    private val parts = name.split('.').map { it.toInt() }
 
     override fun compareTo(other: Version): Int {
-        throw UnsupportedOperationException()
+        return parts
+            .zip(other.parts, { l, r -> r - l })
+            .firstOrNull { it != 0 } ?: other.parts.size - parts.size
     }
 
     override fun toString(): String {

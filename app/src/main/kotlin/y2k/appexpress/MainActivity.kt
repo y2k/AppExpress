@@ -9,11 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import y2k.appexpress.models.App
 import y2k.appexpress.models.AppService
 import y2k.appexpress.models.PackageService
 import y2k.appexpress.models.StorageService
 
+//
+// Created by y2k on 1/1/16.
+//
 class MainActivity : AppCompatActivity() {
 
     val service = AppService(PackageService(this), StorageService())
@@ -27,12 +31,22 @@ class MainActivity : AppCompatActivity() {
         list.layoutManager = LinearLayoutManager(this)
         list.adapter = AppAdapter()
 
+        val progress = findViewById(R.id.progress)
+
         service
             .getApps()
             .subscribe({
                 items = it
                 list.adapter.notifyDataSetChanged()
-            }, { it.printStackTrace() })
+
+                progress.animate().alpha(0f)
+                list.alpha = 0f
+                list.animate().alpha(1f)
+            }, {
+                it.printStackTrace()
+                progress.animate().alpha(0f)
+                Toast.makeText(this, "Error: $it", Toast.LENGTH_LONG).show()
+            })
     }
 
     inner class AppAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -52,13 +66,13 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val app = items[position]
-            holder.title.text = "${app.title} (${app.id})"
+            holder.title.text = "${app.title} (${app.packageName})"
             holder.subTitle.text = "Version: ${app.serverVersion}"
             holder.installed.isChecked = app.installed
         }
 
         override fun getItemId(position: Int): Long {
-            return items[position].intId
+            return items[position].id
         }
     }
 
