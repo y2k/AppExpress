@@ -11,11 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ProgressBar
+    <FrameLayout
         android:id="@+id/progress"
-        style="?android:progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_logo"
+            android:tint="@color/colorPrimary"/>
+
+        <ProgressBar
+            style="?android:progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 </FrameLayout>
