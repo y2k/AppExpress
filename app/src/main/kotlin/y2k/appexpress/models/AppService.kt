@@ -19,11 +19,15 @@ class AppService(
             .map { files ->
                 files
                     .map { regex.find(it.name)?.groups }
-                    .map { info -> info?.let { App(files[0].parentFile.name, it[1]!!.value, it[2]!!.value) } }
+                    .map { info -> info?.let { App(files[0].parentFile.name, it[1]!!.value, Version(it[2]!!.value)) } }
                     .filter { it != null }
                     .maxBy { it!!.serverVersion }
             }
             .filter { it != null }.map { it!! }
+            .map {
+                it.installed = packageService.checkIsInstalled(it.id)
+                it
+            }
             .toList()
             .observeOn(UIScheduler.scheduler)
     }
