@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             }, {
                 it.printStackTrace()
                 progress.animate().alpha(0f)
-                Toast.makeText(this, "Error: $it", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.error, it), Toast.LENGTH_LONG).show()
             })
     }
 
@@ -68,8 +68,9 @@ class MainActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val app = items[position]
             holder.title.text = "${app.title} (${app.packageName})"
-            holder.subTitle.text = "Version: ${app.serverVersion}"
+            holder.subTitle.text = getString(R.string.version, app.serverVersion)
             holder.installed.isChecked = app.installed
+            holder.installed.setText(if (app.installed) R.string.installed else R.string.not_installed)
             holder.action.setText(if (app.installed) R.string.update else R.string.install)
         }
 

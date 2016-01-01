@@ -13,17 +13,16 @@
 
     <FrameLayout
         android:id="@+id/progress"
-        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_logo"
-            android:tint="@color/colorPrimary"/>
+            android:src="@mipmap/ic_logo"/>
 
         <ProgressBar
             style="?android:progressBarStyle"

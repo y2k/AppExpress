@@ -11,7 +11,6 @@ class AppService(
 
     fun getApps(): Observable<List<App>> {
         return storageService.list()
-            .map { it.sortedBy { it.name } }
             .flatMap { Observable.from(it) }
             .flatMap { storageService.list(it) }
             .filter { !it.isEmpty() }
@@ -25,6 +24,7 @@ class AppService(
             .filter { it != null }.map { it!! }
             .doOnNext { it.installedVersion = packageService.getVersion(it.packageName) }
             .toList()
+            .map { it.sortedBy { it.title } }
             .observeOn(UIScheduler.scheduler)
     }
 

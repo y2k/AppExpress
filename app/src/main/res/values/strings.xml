@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">App Express</string>
+    <string name="app_name" translatable="false">App Express</string>
     <string name="update">Update</string>
     <string name="install">Install</string>
+    <string name="installed">Installed</string>
+    <string name="not_installed">Not installed</string>
+    <string name="version">Version: %1$s</string>
+    <string name="error">Error: %1$s</string>
 </resources>
