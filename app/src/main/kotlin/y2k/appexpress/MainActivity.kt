@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import y2k.appexpress.models.App
 import y2k.appexpress.models.AppService
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder? {
-            val view = LayoutInflater.from(parent?.context).inflate(android.R.layout.simple_list_item_2, parent, false)
+            val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_app, parent, false)
             return ViewHolder(view)
         }
 
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             val app = items[position]
             holder.title.text = "${app.title} (${app.id})"
             holder.subTitle.text = "Version: ${app.serverVersion}"
+            holder.installed.isChecked = app.installed
         }
 
         override fun getItemId(position: Int): Long {
@@ -62,7 +64,8 @@ class MainActivity : AppCompatActivity() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        val title = view.findViewById(android.R.id.text1) as TextView
-        val subTitle = view.findViewById(android.R.id.text2) as TextView
+        val title = view.findViewById(R.id.title) as TextView
+        val subTitle = view.findViewById(R.id.subTitle) as TextView
+        val installed = view.findViewById(R.id.installed) as CheckBox
     }
 }
