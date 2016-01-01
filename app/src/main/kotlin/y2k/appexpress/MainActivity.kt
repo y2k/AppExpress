@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             holder.title.text = "${app.title} (${app.packageName})"
             holder.subTitle.text = "Version: ${app.serverVersion}"
             holder.installed.isChecked = app.installed
+            holder.action.setText(if (app.installed) R.string.update else R.string.install)
         }
 
         override fun getItemId(position: Int): Long {
@@ -81,5 +83,6 @@ class MainActivity : AppCompatActivity() {
         val title = view.findViewById(R.id.title) as TextView
         val subTitle = view.findViewById(R.id.subTitle) as TextView
         val installed = view.findViewById(R.id.installed) as CheckBox
+        val action = view.findViewById(R.id.action) as Button
     }
 }

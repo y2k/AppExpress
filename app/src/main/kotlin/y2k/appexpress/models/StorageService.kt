@@ -18,8 +18,9 @@ class StorageService {
             .fromCallable {
                 val config = DbxRequestConfig("AppExpress", "" + Locale.getDefault())
                 val client = DbxClientV2(config, BuildConfig.DROPBOX_ACCESS_TOKEN)
-                client.files
-                    .listFolder(path?.absolutePath ?: "").entries
+                client
+                    .files.listFolder(path?.absolutePath ?: "")
+                    .entries
                     .map { if (path == null) File(it.name) else File(path, it.name) }
             }
             .subscribeOn(Schedulers.io())

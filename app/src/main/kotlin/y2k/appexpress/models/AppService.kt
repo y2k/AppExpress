@@ -13,6 +13,7 @@ class AppService(
         var regex = Regex("([\\w\\d\\.]+)-([\\d\\.]*\\d+)")
         return storageService
             .list()
+            .map { it.sortedBy { it.name } }
             .flatMap { Observable.from(it) }
             .flatMap { storageService.list(it) }
             .filter { !it.isEmpty() }
