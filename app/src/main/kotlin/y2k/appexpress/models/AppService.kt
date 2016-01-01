@@ -7,29 +7,29 @@ import rx.Observable
 //
 class AppService(
     private val packageService: PackageService,
-    private val storageService: StorageService) {
+    private val storageService: CloudStorageService) {
 
     fun getApps(): Observable<List<App>> {
-        var regex = Regex("([\\w\\d\\.]+)-([\\d\\.]*\\d+)")
-        return storageService
-            .list()
+        return storageService.list()
             .map { it.sortedBy { it.name } }
             .flatMap { Observable.from(it) }
             .flatMap { storageService.list(it) }
             .filter { !it.isEmpty() }
             .map { files ->
                 files
-                    .map { regex.find(it.name)?.groups }
+                    .map { infoRegex.find(it.name)?.groups }
                     .map { info -> info?.let { App(files[0].parentFile.name, it[1]!!.value, Version(it[2]!!.value)) } }
                     .filter { it != null }
                     .maxBy { it!!.serverVersion }
             }
             .filter { it != null }.map { it!! }
-            .map {
-                it.installedVersion = packageService.getVersion(it.packageName)
-                it
-            }
+            .doOnNext { it.installedVersion = packageService.getVersion(it.packageName) }
             .toList()
             .observeOn(UIScheduler.scheduler)
+    }
+
+    companion object {
+
+        val infoRegex = Regex("([\\w\\d\\.]+)-([\\d\\.]*\\d+)")
     }
 }

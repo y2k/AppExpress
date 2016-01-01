@@ -14,14 +14,14 @@ import android.widget.Toast
 import y2k.appexpress.models.App
 import y2k.appexpress.models.AppService
 import y2k.appexpress.models.PackageService
-import y2k.appexpress.models.StorageService
+import y2k.appexpress.models.CloudStorageService
 
 //
 // Created by y2k on 1/1/16.
 //
 class MainActivity : AppCompatActivity() {
 
-    val service = AppService(PackageService(this), StorageService())
+    val service = AppService(PackageService(this), CloudStorageService())
     var items = emptyList<App>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

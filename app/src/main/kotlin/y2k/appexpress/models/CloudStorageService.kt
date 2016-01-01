@@ -11,15 +11,18 @@ import java.util.*
 //
 // Created by y2k on 1/1/16.
 //
-class StorageService {
+class CloudStorageService {
+
+    val dbxClient by lazy {
+        val config = DbxRequestConfig("AppExpress", "" + Locale.getDefault())
+        DbxClientV2(config, BuildConfig.DROPBOX_ACCESS_TOKEN)
+    }
 
     fun list(path: File? = null): Observable<List<File>> {
         return Observable
             .fromCallable {
-                val config = DbxRequestConfig("AppExpress", "" + Locale.getDefault())
-                val client = DbxClientV2(config, BuildConfig.DROPBOX_ACCESS_TOKEN)
-                client
-                    .files.listFolder(path?.absolutePath ?: "")
+                dbxClient.files
+                    .listFolder(path?.absolutePath ?: "")
                     .entries
                     .map { if (path == null) File(it.name) else File(path, it.name) }
             }
