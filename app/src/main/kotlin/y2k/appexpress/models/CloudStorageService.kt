@@ -13,7 +13,7 @@ import java.util.*
 //
 class CloudStorageService {
 
-    val dbxClient by lazy {
+    private val dbxClient by lazy {
         val config = DbxRequestConfig("AppExpress", "" + Locale.getDefault())
         DbxClientV2(config, BuildConfig.DROPBOX_ACCESS_TOKEN)
     }
@@ -25,6 +25,19 @@ class CloudStorageService {
                     .listFolder(path?.absolutePath ?: "")
                     .entries
                     .map { if (path == null) File(it.name) else File(path, it.name) }
+            }
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun downloadTo(src: File, target: File): Observable<Unit> {
+        return Observable
+            .fromCallable {
+                target.outputStream().use {
+                    dbxClient.files
+                        .downloadBuilder(src.absolutePath)
+                        .run(it)
+                }
+                Unit
             }
             .subscribeOn(Schedulers.io())
     }

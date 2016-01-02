@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import rx.Subscription
 import y2k.appexpress.models.App
 import y2k.appexpress.models.AppService
 import y2k.appexpress.models.PackageService
@@ -21,8 +22,11 @@ import y2k.appexpress.models.CloudStorageService
 //
 class MainActivity : AppCompatActivity() {
 
-    val service = AppService(PackageService(this), CloudStorageService())
+    val service = AppService(this, PackageService(this), CloudStorageService())
+
     var items = emptyList<App>()
+
+    private var subscription: Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         val progress = findViewById(R.id.progress)
 
-        service
+        subscription = service
             .getApps()
             .subscribe({
                 items = it
@@ -48,6 +52,11 @@ class MainActivity : AppCompatActivity() {
                 progress.animate().alpha(0f)
                 Toast.makeText(this, getString(R.string.error, it), Toast.LENGTH_LONG).show()
             })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        subscription?.unsubscribe()
     }
 
     inner class AppAdapter : RecyclerView.Adapter<ViewHolder>() {
@@ -67,8 +76,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val app = items[position]
-            holder.title.text = "${app.title} (${app.packageName})"
-            holder.subTitle.text = getString(R.string.version, app.serverVersion)
+            holder.title.text = "${app.info.title} (${app.info.packageName})"
+            holder.subTitle.text = getString(R.string.version, app.info.serverVersion)
 
             holder.installed.isChecked = app.installed
             holder.installed.text =
@@ -78,9 +87,16 @@ class MainActivity : AppCompatActivity() {
             holder.action.apply {
                 visibility = View.VISIBLE
                 isEnabled = true
+                setOnClickListener(null)
                 when (app.state) {
-                    App.State.NotInstalled -> setText(R.string.install)
-                    App.State.HasUpdate -> setText(R.string.update)
+                    App.State.NotInstalled -> {
+                        setText(R.string.install)
+                        setOnClickListener { service.installApp(app) }
+                    }
+                    App.State.HasUpdate -> {
+                        setText(R.string.update)
+                        setOnClickListener { service.installApp(app) }
+                    }
                     App.State.InProgress -> {
                         setText(R.string.updating)
                         isEnabled = false
