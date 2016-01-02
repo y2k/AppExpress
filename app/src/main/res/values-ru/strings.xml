@@ -6,4 +6,6 @@
     <string name="update">Обновить</string>
     <string name="version">Версия: %1$s</string>
     <string name="error">Ошибка: %1$s</string>
+    <string name="updating">Обновляется</string>
+    <string name="installed_version">Установлено (%1$s)</string>
 </resources>

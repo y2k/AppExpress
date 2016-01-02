@@ -17,12 +17,18 @@ class AppService(
             .map { files ->
                 files
                     .map { infoRegex.find(it.name)?.groups }
-                    .map { info -> info?.let { App(files[0].parentFile.name, it[1]!!.value, Version(it[2]!!.value)) } }
+                    .map { info ->
+                        info?.let {
+                            App(files[0].parentFile.name,
+                                it[1]!!.value,
+                                Version(it[2]!!.value),
+                                packageService.getVersion(it[1]!!.value))
+                        }
+                    }
                     .filter { it != null }
                     .maxBy { it!!.serverVersion }
             }
             .filter { it != null }.map { it!! }
-            .doOnNext { it.installedVersion = packageService.getVersion(it.packageName) }
             .toList()
             .map { it.sortedBy { it.title } }
             .observeOn(UIScheduler.scheduler)

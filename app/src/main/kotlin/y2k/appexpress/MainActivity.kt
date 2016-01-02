@@ -69,9 +69,25 @@ class MainActivity : AppCompatActivity() {
             val app = items[position]
             holder.title.text = "${app.title} (${app.packageName})"
             holder.subTitle.text = getString(R.string.version, app.serverVersion)
+
             holder.installed.isChecked = app.installed
-            holder.installed.setText(if (app.installed) R.string.installed else R.string.not_installed)
-            holder.action.setText(if (app.installed) R.string.update else R.string.install)
+            holder.installed.text =
+                if (app.installed) getString(R.string.installed_version, app.installedVersion)
+                else getString(R.string.not_installed)
+
+            holder.action.apply {
+                visibility = View.VISIBLE
+                isEnabled = true
+                when (app.state) {
+                    App.State.NotInstalled -> setText(R.string.install)
+                    App.State.HasUpdate -> setText(R.string.update)
+                    App.State.InProgress -> {
+                        setText(R.string.updating)
+                        isEnabled = false
+                    }
+                    else -> visibility = View.GONE
+                }
+            }
         }
 
         override fun getItemId(position: Int): Long {
