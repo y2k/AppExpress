@@ -5,7 +5,7 @@ import java.io.File
 //
 // Created by y2k on 1/2/16.
 //
-class AppDescription(private val file: File) {
+class AppDescription(val file: File) {
 
     val title: String
         get() = file.parentFile.name

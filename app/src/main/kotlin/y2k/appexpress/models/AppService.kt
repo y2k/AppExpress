@@ -32,7 +32,11 @@ class AppService(
     fun installApp(app: App) {
         val targetFile = File(context.cacheDir, app.info.packageName)
         storageService
-            .downloadTo(File(""), targetFile)
+            .downloadTo(app.info.file, targetFile)
             .map { packageService.install(targetFile) }
+            .observeOn(UIScheduler.scheduler)
+            .subscribe({
+                // TODO
+            }, { it.printStackTrace() })
     }
 }
