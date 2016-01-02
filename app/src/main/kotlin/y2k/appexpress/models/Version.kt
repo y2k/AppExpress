@@ -9,8 +9,8 @@ class Version(name: String) : Comparable<Version> {
 
     override fun compareTo(other: Version): Int {
         return parts
-            .zip(other.parts, { l, r -> r - l })
-            .firstOrNull { it != 0 } ?: other.parts.size - parts.size
+            .zip(other.parts, { l, r -> l - r })
+            .firstOrNull { it != 0 } ?: parts.size - other.parts.size
     }
 
     override fun toString(): String {
