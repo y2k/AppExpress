@@ -21,16 +21,15 @@ class PackageService(private val context: Context) {
     }
 
     fun install(target: File) {
-        var promptInstall = Intent(Intent.ACTION_VIEW);
-        promptInstall.setClassName("com.android.packageinstaller", "com.android.packageinstaller.PackageInstallerActivity");
+        var installIntent = Intent(Intent.ACTION_VIEW)
+        installIntent.setClassName("com.android.packageinstaller", "com.android.packageinstaller.PackageInstallerActivity")
 
-        val pm = context.packageManager;
-        if (pm.queryIntentActivities(promptInstall, 0).isEmpty())
-            promptInstall = Intent(Intent.ACTION_VIEW);
+        val pm = context.packageManager
+        if (pm.queryIntentActivities(installIntent, 0).isEmpty())
+            installIntent = Intent(Intent.ACTION_VIEW)
 
-        promptInstall.setDataAndType(Uri.fromFile(target), "application/vnd.android.package-archive");
-        promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        installIntent.setDataAndType(Uri.fromFile(target), "application/vnd.android.package-archive")
 
-        context.startActivity(promptInstall)
+        context.startActivity(installIntent)
     }
 }

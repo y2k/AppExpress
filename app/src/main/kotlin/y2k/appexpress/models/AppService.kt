@@ -30,7 +30,7 @@ class AppService(
     }
 
     fun installApp(app: App) {
-        val targetFile = File(context.cacheDir, app.info.packageName)
+        val targetFile = File(context.externalCacheDir, app.info.packageName + ".apk")
         storageService
             .downloadTo(app.info.file, targetFile)
             .map { packageService.install(targetFile) }
