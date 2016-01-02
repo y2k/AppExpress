@@ -19,10 +19,10 @@ class AppService(
                     .map { infoRegex.find(it.name)?.groups }
                     .map { info ->
                         info?.let {
-                            App(files[0].parentFile.name,
-                                it[1]!!.value,
-                                Version(it[2]!!.value),
-                                packageService.getVersion(it[1]!!.value))
+                            val packageName = it[1]!!.value
+                            val title = files[0].parentFile.name
+                            val version = Version(it[2]!!.value)
+                            App(title, packageName, version, packageService.getVersion(packageName))
                         }
                     }
                     .filter { it != null }
@@ -34,8 +34,12 @@ class AppService(
             .observeOn(UIScheduler.scheduler)
     }
 
+    fun installApp(app: App) {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
 
-        val infoRegex = Regex("([\\w\\d\\.]+)-([\\d\\.]*\\d+)")
+        private val infoRegex = Regex("([\\w\\d\\.]+)-([\\d\\.]*\\d+)")
     }
 }
