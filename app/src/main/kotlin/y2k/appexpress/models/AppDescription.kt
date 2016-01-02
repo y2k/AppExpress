@@ -11,7 +11,7 @@ class AppDescription(private val file: File) {
         get() = file.parentFile.name
 
     val isValid: Boolean
-        get() = file.parentFile != null && InfoRegex.matches(file.name)
+        get() = file.parentFile != null && InfoRegex.containsMatchIn(file.name)
 
     val packageName: String
         get() = InfoRegex.find(file.name)!!.groups[1]!!.value

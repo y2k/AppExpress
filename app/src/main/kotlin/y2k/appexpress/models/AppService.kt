@@ -17,7 +17,6 @@ class AppService(
         return storageService.list()
             .flatMap { Observable.from(it) }
             .flatMap { storageService.list(it) }
-            .filter { !it.isEmpty() }
             .map { files ->
                 files
                     .map { AppDescription(it) }
@@ -26,8 +25,7 @@ class AppService(
             }
             .notNull()
             .map { App(it, packageService.getVersion(it.packageName)) }
-            .toList()
-            .map { it.sortedBy { it.info.title } }
+            .toSortedList { left, right -> left.info.title.compareTo(right.info.title) }
             .observeOn(UIScheduler.scheduler)
     }
 
