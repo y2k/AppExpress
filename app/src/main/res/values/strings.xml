@@ -8,4 +8,5 @@
     <string name="error">Error: %1$s</string>
     <string name="updating">Updating</string>
     <string name="installed_version">Installed (%1$s)</string>
+    <string name="synchronize_app_list">Synchronize app list…</string>
 </resources>

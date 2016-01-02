@@ -11,23 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/ic_logo"/>
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ProgressBar
             style="?android:progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
-    </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/synchronize_app_list"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorAccent"/>
+    </LinearLayout>
 </FrameLayout>
