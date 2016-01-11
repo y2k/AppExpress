@@ -2,6 +2,7 @@ package y2k.appexpress.models
 
 import android.content.Context
 import rx.Observable
+import y2k.appexpress.common.accumulate
 import y2k.appexpress.common.notNull
 import java.io.File
 
@@ -16,7 +17,7 @@ class AppService(
     fun getApps(): Observable<List<App>> {
         return storageService.list()
             .flatMap { Observable.from(it) }
-            .flatMap { storageService.list(it) }
+            .flatMap({ storageService.list(it) }, 5)
             .map { files ->
                 files
                     .map { AppDescription(it) }
@@ -25,7 +26,7 @@ class AppService(
             }
             .notNull()
             .map { App(it, packageService.getVersion(it.packageName)) }
-            .toSortedList { left, right -> left.info.title.compareTo(right.info.title) }
+            .accumulate()
             .observeOn(UIScheduler.scheduler)
     }
 

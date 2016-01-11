@@ -1,7 +1,7 @@
 package y2k.appexpress
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,8 +14,8 @@ import android.widget.Toast
 import rx.Subscription
 import y2k.appexpress.models.App
 import y2k.appexpress.models.AppService
-import y2k.appexpress.models.PackageService
 import y2k.appexpress.models.CloudStorageService
+import y2k.appexpress.models.PackageService
 
 //
 // Created by y2k on 1/1/16.
@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         val progress = findViewById(R.id.progress)
 
+        list.alpha = 0f
         subscription = service
             .getApps()
             .subscribe({
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 list.adapter.notifyDataSetChanged()
 
                 progress.animate().alpha(0f)
-                list.alpha = 0f
                 list.animate().alpha(1f)
             }, {
                 it.printStackTrace()
